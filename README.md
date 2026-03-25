@@ -1,3 +1,5 @@
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/OSideMedia/dual-brain/releases/tag/v1.0.0) [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Platform](https://img.shields.io/badge/platform-Claude%20Code%20%2B%20Gemini%20CLI-purple)](https://github.com/OSideMedia/dual-brain)
+
 # Dual-Brain Devkit
 
 > Run two AI coding assistants in parallel — one builds, one thinks.

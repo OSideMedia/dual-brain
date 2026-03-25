@@ -1,5 +1,7 @@
 # Dual-Brain Devkit
 
+> Run two AI coding assistants in parallel — one builds, one thinks.
+
 A framework for running Claude Code and Gemini CLI as parallel AI coding assistants on the same project. Each AI gets its own context file with a defined role, shared conventions, and instructions to sync with the other — so they stay aligned without stepping on each other.
 
 ## The idea

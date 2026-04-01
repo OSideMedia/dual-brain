@@ -29,54 +29,42 @@ fi
 
 cd "$PROJECT_DIR"
 
-# Build stack list
-STACK_LIST=""
-IFS=',' read -ra ITEMS <<< "$STACK"
-for item in "${ITEMS[@]}"; do
-    trimmed=$(echo "$item" | xargs)
-    STACK_LIST="${STACK_LIST}- ${trimmed}
-"
-done
-
 # --- CLAUDE.md ---
 if [ ! -f "CLAUDE.md" ]; then
 cat > CLAUDE.md << EOF
 # ${PROJECT_NAME} – CLAUDE.md
 
-## Project Overview
-<!-- Describe what this project does in 2-3 sentences -->
+## Shared Context
+<!-- Both AIs read this section. Keep it factual and concise. -->
 
-**Live:** <!-- deployment URL -->
 **Repo:** https://github.com/OSideMedia/${PROJECT_NAME}
-**Branch:** main
+**Live:** <!-- deployment URL -->
+**Stack:** ${STACK}
 
-## Tech Stack
-${STACK_LIST}
-## Project Structure
-\`\`\`
-src/
-├── app/            # Pages & layouts
-├── components/     # React components
-├── lib/            # Utilities, queries, mutations
-\`\`\`
+## Rules
+<!-- One directive per line. No prose. No explanations of "why." -->
+<!-- Test: "If Claude broke this, would the damage be immediate and hard to undo?" -->
 
-## Key Features
-<!-- Update this as features ship -->
+> TypeScript strict mode, always.
+> Functional components with hooks, no class components.
+> Commit messages: \`feat:\`, \`fix:\`, \`refactor:\`, \`chore:\`.
+<!-- Add project-specific guardrails below -->
 
-## Supabase
-<!-- Tables, RPC functions, policies -->
+## Cross-Context Sync
 
-## Conventions
-- TypeScript strict mode
-- Functional components with hooks
-- Supabase RPC for complex queries (not client-side joins)
-- Commit messages: \`feat:\`, \`fix:\`, \`refactor:\`, \`chore:\`
+> Read GEMINI.md at the start of every session. Absorb any architecture decisions before proceeding.
 
-## Cross-Context
-Read GEMINI.md at the start of each session to stay aligned with architecture decisions made in Gemini CLI. If GEMINI.md reflects decisions you weren't part of, update your understanding before proceeding.
+## Decisions Log
+<!-- Append-only. One line per decision. Date + what changed. Never delete entries. -->
+<!-- Example: 2026-04-01 — Switched from Drizzle to raw SQL for Supabase queries -->
 
 ## Housekeeping
-After completing any feature, update CLAUDE.md and GEMINI.md to reflect new features, RPC functions, or architecture changes.
+
+> After completing a feature, update this file AND GEMINI.md.
+> Shared Context: keep factual, concise. No prose paragraphs.
+> Rules: short directives only. No explanations of "why."
+> Decisions Log: one line per entry. Date + what changed.
+> If any section grows past 10 lines, move the overflow to README or docs/.
 EOF
 
 echo -e "${GREEN}✓ Created CLAUDE.md${NC}"
@@ -89,52 +77,43 @@ if [ ! -f "GEMINI.md" ]; then
 cat > GEMINI.md << EOF
 # ${PROJECT_NAME} – GEMINI.md
 
-## Project Overview
-<!-- Describe what this project does in 2-3 sentences -->
+## Shared Context
+<!-- Both AIs read this section. Keep it factual and concise. -->
 
-**Live:** <!-- deployment URL -->
 **Repo:** https://github.com/OSideMedia/${PROJECT_NAME}
-**Branch:** main
+**Live:** <!-- deployment URL -->
+**Stack:** ${STACK}
 
-## Tech Stack
-${STACK_LIST}
-## Project Structure
-\`\`\`
-src/
-├── app/            # Pages & layouts
-├── components/     # React components
-├── lib/            # Utilities, queries, mutations
-\`\`\`
+## Role
 
-## Key Features
-<!-- Update this as features ship -->
+> You are a thinking partner and architecture advisor. Not a builder.
+> Your strengths: logic, data modeling, architecture, code review, research, frontend visual debugging.
+> Claude Code handles all file creation, editing, git, and deployment.
+> Format solutions so the developer can paste them into Claude Code as instructions.
 
-## Supabase
-<!-- Tables, RPC functions, policies -->
+## Rules
+<!-- Same shared conventions as CLAUDE.md -->
 
-## Role for Gemini CLI
-You are a **thinking partner and architecture advisor** for this project. Your strengths:
-- **Logic & algorithms:** Complex business logic, data transformations, graph traversal
-- **Data modeling:** Schema design, RPC optimization, query performance
-- **Architecture decisions:** Component structure, state management, caching strategies
-- **Code review:** Ghost dependencies, dead code, race conditions
-- **Frontend debugging:** D3, canvas, complex CSS, animation timing, visual math
-- **Research:** Library evaluation, approach comparison, solving problems Claude Code hasn't cracked
+> TypeScript strict mode, always.
+> Functional components with hooks, no class components.
+> Commit messages: \`feat:\`, \`fix:\`, \`refactor:\`, \`chore:\`.
+<!-- Add project-specific guardrails below -->
 
-**Important:** Claude Code handles all file creation, editing, git operations, and deployment.
-You provide the thinking — Claude Code does the building.
+## Cross-Context Sync
 
-## Conventions
-- TypeScript strict mode
-- Functional components with hooks
-- Supabase RPC for complex queries (not client-side joins)
-- Commit messages: \`feat:\`, \`fix:\`, \`refactor:\`, \`chore:\`
+> Read CLAUDE.md at the start of every session. Absorb any recent features or changes before advising.
 
-## Cross-Context
-Read CLAUDE.md at the start of each session to stay aligned with implementation details and recent changes made in Claude Code. If CLAUDE.md reflects features or patterns you weren't part of, update your understanding before advising.
+## Decisions Log
+<!-- Append-only. One line per decision. Date + what changed. Never delete entries. -->
+<!-- Example: 2026-04-01 — Switched from Drizzle to raw SQL for Supabase queries -->
 
 ## Housekeeping
-After any architecture discussion that results in decisions, update this file to reflect new patterns, conventions, or planned features. Also flag if CLAUDE.md needs updating so the developer can tell Claude Code to sync.
+
+> After any architecture discussion that produces a decision, update this file AND flag CLAUDE.md for sync.
+> Shared Context: keep factual, concise. No prose paragraphs.
+> Rules: short directives only. No explanations of "why."
+> Decisions Log: one line per entry. Date + what changed.
+> If any section grows past 10 lines, move the overflow to README or docs/.
 EOF
 
 echo -e "${GREEN}✓ Created GEMINI.md${NC}"
@@ -203,8 +182,8 @@ echo -e "${CYAN}  Location: ${PROJECT_DIR}${NC}"
 echo -e "${CYAN}  Stack: ${STACK}${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
-echo -e "  ${GREEN}✓${NC} CLAUDE.md    — Claude Code context"
-echo -e "  ${GREEN}✓${NC} GEMINI.md    — Gemini CLI context"
+echo -e "  ${GREEN}✓${NC} CLAUDE.md    — Claude Code context (short, opinionated, operational)"
+echo -e "  ${GREEN}✓${NC} GEMINI.md    — Gemini CLI context (short, opinionated, operational)"
 echo -e "  ${GREEN}✓${NC} ROUTING-PROTOCOL.md — Dual-terminal decision framework"
 echo ""
 echo -e "Next steps:"

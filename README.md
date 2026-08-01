@@ -2,6 +2,8 @@
 
 # Dual-Brain Devkit
 
+> **⚠️ No longer maintained.** This project has been superseded by a multi-model council workflow (multiple AI CLIs convened as reviewers from a single session), which replaced the split-terminal approach. The repo is archived and kept for reference.
+
 > Run two AI coding assistants in parallel — one builds, one thinks.
 
 A framework for running Claude Code and Gemini CLI as parallel AI coding assistants on the same project. Each AI gets its own context file with a defined role, shared conventions, and instructions to sync with the other — so they stay aligned without stepping on each other.
